@@ -1,0 +1,48 @@
+{% extends 'Layouts/base.html.twig' %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Test technique : lancer de dés</h1>
+                <p>
+                    Petit jeu de lancer de dés, veuillez choisir si vous souhaitez jouer en ligne ou en local.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    {% set urlLocal = path("jeu_local_index") %}
+    <a href = {{ urlLocal }}>
+        <button type="button" class="btn btn-primary">Jouer en local</button>
+    </a>
+
+    <br>
+    <br>
+
+    {% set urlOnline = path("jeu_online_index") %}
+    <a href = {{ urlOnline }}>
+        <button type="button" class="btn btn-primary">Jouer en ligne</button>
+    </a>
+
+    <br><br><br>
+
+    <h3>Meilleurs scores : </h3>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Pseudo</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td> score.pseudo </td>
+                    <td> score.score </td>
+                </tr>
+        </tbody>
+
+
+{% endblock %}

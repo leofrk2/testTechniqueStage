@@ -1,0 +1,20 @@
+{% extends "Layouts/base.html.twig" %}
+
+{% block title %}
+    Nouvelle Partie
+{% endblock %}
+
+
+{% block body %}
+    <h2>Jeu en local</h2>
+    <ul>
+
+    </ul>
+    <br><br>
+    Lancer une nouvelle partie :
+    {% set urlNouvellePartie = path("jeu_local_nouvelle_partie") %}
+    <a href = {{ urlNouvellePartie }}>
+        <button class="btn btn-primary">Nouvelle partie</button>
+    </a>
+
+{% endblock %}
