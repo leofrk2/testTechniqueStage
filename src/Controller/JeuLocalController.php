@@ -58,11 +58,20 @@ class JeuLocalController extends AbstractController
      */
     public function choixejouer($choix, Session $session) : Response
     {
+        //TODO round++ si rejoue
         $idJoueur = $session->get('idJoueur');
 
         //le joueur a choisi de rejouer
         if($choix == 1) {
             $session->set('choix' . $idJoueur, 1);
+            if($idJoueur == 2 && $session->get('choix1') == 2){
+
+                $session->set('show', 1);
+                return $this->render('JeuLocal/tour.html.twig');
+            }
+
+            $session->set('show', 1);
+            $this->inverseIdJoueur($session);
             return $this->render('JeuLocal/tour.html.twig');
 
 
@@ -75,8 +84,8 @@ class JeuLocalController extends AbstractController
                 );
                 return $this->render('JeuLocal/fin.html.twig', $args);
             } else {
-                $this->inverseIdJoueur($session);
                 $session->set("show", 1);
+                $this->inverseIdJoueur($session);
                 return $this->render('JeuLocal/tour.html.twig');
             }
         }
