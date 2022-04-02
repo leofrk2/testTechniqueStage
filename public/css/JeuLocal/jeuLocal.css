@@ -1,6 +1,8 @@
 body{
     background-color: #f5eec2;
+    transition: opacity 1000ms;
 }
+
 
 h3{
     color: #416a59;

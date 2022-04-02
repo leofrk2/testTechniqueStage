@@ -10,23 +10,31 @@
         {% endblock %}
     </head>
     <body>
-    {% for msg in app.session.flashBag.get('info') %}
-        <li>{{ msg }}</li>
-    {% endfor %}
 
 
-        {% block body %}{% endblock %}
-    {% block imageDes %}
-    <div class="dice1" style="background-image: url('{{ asset('pictures/dice1.png') }}')"></div>
-    <div class="dice2" style="background-image: url('{{ asset('pictures/dice2.png') }}')"></div>
+    {% block flash %}
+            {% for msg in app.session.flashBag.get('info') %}
+                <div class="text-center alert alert-success" role="alert">
+                {{ msg }}
+                </div>
+            {% endfor %}
     {% endblock %}
 
-    {% block info %}
-    <div class="info">
-        Site réalisé à l'aide du framework Symfony
-        <img src="{{ asset('pictures/symfonyLogo.png') }}" alt="logo symfony">
-    </div>
-    {% endblock %}
+    {% block body %}
+        {% endblock %}
+        {% block imageDes %}
+        <div class="dice1 position-fixed" style="background-image: url('{{ asset('pictures/dice1.png') }}')"></div>
+        <div class="dice2 position-fixed" style="background-image: url('{{ asset('pictures/dice2.png') }}')"></div>
+        {% endblock %}
+
+
+        {% block info %}
+            <div class="info">
+            Site réalisé à l'aide du framework Symfony
+            <img src="{{ asset('pictures/symfonyLogo.png') }}" alt="logo symfony">
+            </div>
+        </div>
+        {% endblock %}
 
 
     </body>

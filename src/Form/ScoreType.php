@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Score;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,8 +13,10 @@ class ScoreType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('pseudo')
-            ->add('score')
+            ->add('pseudo', null, [
+                'label' => false,
+            ])
+            ->add('Submit', SubmitType::class, ['attr' => ['class' => 'btn btn-primary']])
         ;
     }
 

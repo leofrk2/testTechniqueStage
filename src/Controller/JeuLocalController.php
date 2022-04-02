@@ -48,34 +48,33 @@ class JeuLocalController extends AbstractController
      */
     public function lancerDeAction($idJoueur,  Session $session, Request $request, EntityManagerInterface $em): Response
     {
+        //echo "<script>alert('lancer de');</script>";
+
         $resultat = rand(1, 6) + rand(1, 6);
-        if($resultat > 1){
+        $session->set('resultat'.$idJoueur, $resultat);
+        if($resultat > 90){
             if($idJoueur == 1){
                 $tmp = 2;
             }else{
                 $tmp = 1;
             }
 
-            //echo a javascript to open a popup
 
-           /* echo "<script>
-            alert('Vous avez perdu !');
-</script>";*/
-
-             $score = new Score();
-             $form = $this->createForm(ScoreType::class, $score);
-             $form->handleRequest($request);
-             if($form->isSubmitted() && $form->isValid()) {
-                 $score = $form->getData();
-                 $em->persist($score);
-                 $em->flush();
-                 $this->addFlash('success', 'Score enregistré');
-             }
-
-            $args = array (
-                "Form" => $form->createView(),
-                "loose" => 1,
-                "gagnant" => $tmp,
+            $score = new Score();
+            $form = $this->createForm(ScoreType::class, $score);
+            $score->setScore($resultat);
+            $form->handleRequest($request);
+            if($form->isSubmitted() && $form->isValid()) {
+                $em->persist($score);
+                $em->flush();
+                $this->addFlash('info', 'Score ajouté avec succès');
+                return $this->redirectToRoute('score_list');
+            }
+            //TODO si le joueur perd pck il a fais + de 9 a voir si on vire le form
+            $args = array(
+                'gagnant' => $tmp,
+                'resultat' => $resultat,
+                'Form' => $form->createView(),
             );
 
             return $this->render('JeuLocal/fin.html.twig', $args);
@@ -92,10 +91,12 @@ class JeuLocalController extends AbstractController
     /**
      * @Route("/choix/{choix}", name="_choix")
      * @param $choix
-     * @param $session
+     * @param Session $session
+     * @param Request $request
+     * @param EntityManagerInterface $em
      * @return RedirectResponse
      */
-    public function choixejouer($choix, Session $session) : Response
+    public function choixejouer($choix, Session $session, Request $request, EntityManagerInterface $em) : Response
     {
         //TODO round++ si rejoue
         $idJoueur = $session->get('idJoueur');
@@ -127,10 +128,30 @@ class JeuLocalController extends AbstractController
             $session->set('choix' . $idJoueur, 2);
             if($this->checkFin($session)) {
                 $idGagnant = $this->checkGagnant($session);
-                $args = array(
-                    'gagnant' => $idGagnant,
-                );
-                return $this->render('JeuLocal/fin.html.twig', $args);
+                if($idGagnant != 0) {
+                    $resultat = $session->get('resultat' . $idGagnant);
+
+                    $score = new Score();
+                    $form = $this->createForm(ScoreType::class, $score);
+                    $score->setScore($resultat);
+                    $form->handleRequest($request);
+                    if ($form->isSubmitted() && $form->isValid()) {
+                        $em->persist($score);
+                        $em->flush();
+                        $this->addFlash('info', 'Score ajouté avec succès');
+                        return $this->redirectToRoute('score_list');
+                    }
+
+
+                    $args = array(
+                        'score' => $resultat,
+                        'gagnant' => $idGagnant,
+                        'resultat' => $resultat,
+                        'Form' => $form->createView()
+                    );
+                    return $this->render('JeuLocal/fin.html.twig', $args);
+                } else
+                    return $this->render('JeuLocal/fin.html.twig');
             } else {
                 $session->set("show", 1);
                 $this->inverseIdJoueur($session);
@@ -170,8 +191,10 @@ class JeuLocalController extends AbstractController
         //si un joueur a + de 9 il a automatiquement perdu
         if ($resJoueur1 > $resJoueur2)
             return 1;
-        else
+        else if ($resJoueur1 < $resJoueur2)
             return 2;
+        else
+            return 0;
     }
 }
 

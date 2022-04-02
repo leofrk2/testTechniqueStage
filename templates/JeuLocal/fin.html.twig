@@ -15,15 +15,31 @@
     <div class="container">
         <h1>Fin !</h1>
 
+        {% if gagnant is defined %}
         <p>
             Gagnant : Joueur {{ gagnant }} <br>
+            Score : {{ resultat }}<br>
 
-            {% set urlAccueil = path('accueil_index') %}
-            <a href="{{ urlAccueil }}">Retour à l'accueil</a>
+            <br>
+            Entrez votre pseudo pour enregistrer votre score : <br>
+
 
         </p>
+        {{ form_start(Form) }}
+        {{ form_widget(Form) }}
+        {{ form_end(Form) }}
 
-        {{ form(Form) }}
+        {% elseif not gagnant is defined %}
+
+        <p>
+            Egalité ! <br>
+        </p>
+
+            {% set urlAccueil = path('accueil_index') %}
+            <a href="{{ urlAccueil }}">
+                <button type="button" class="btn btn-primary">Retour à l'accueil</button></a>
+
+        {% endif %}
 
     </div>
 {% endblock %}
