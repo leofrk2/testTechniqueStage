@@ -1,0 +1,27 @@
+body{
+    background-color: #f5eec2;
+}
+
+h3{
+    color: #416a59;
+}
+
+.btn{
+    background-color: #39395f;
+    border-color: #39395f;
+    padding: 20px 30px 20px 30px;
+    font-size: 30px;
+    color: #f5eec2;
+}
+
+.btn-primary:hover{
+    background-color: #E55049;
+    border-color: #73a24e;
+    color: #f5eec2;
+}
+
+
+
+.buttons{
+    width: 50%;
+}

@@ -2,11 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Score;
+use App\Form\ScoreType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 #[Route('/jeuLocal', name: 'jeu_local')]
 class JeuLocalController extends AbstractController
@@ -36,16 +41,50 @@ class JeuLocalController extends AbstractController
     /**
      * @Route("/lancer/{idJoueur}", name="_lancer")
      * @param $idJoueur
-     * @param $request
-     * @param $session
+     * @param Session $session
+     * @param Request $request
+     * @param EntityManagerInterface $em
      * @return RedirectResponse
      */
-    public function lancerDeAction($idJoueur,  Session $session): Response
+    public function lancerDeAction($idJoueur,  Session $session, Request $request, EntityManagerInterface $em): Response
     {
         $resultat = rand(1, 6) + rand(1, 6);
+        if($resultat > 1){
+            if($idJoueur == 1){
+                $tmp = 2;
+            }else{
+                $tmp = 1;
+            }
+
+            //echo a javascript to open a popup
+
+           /* echo "<script>
+            alert('Vous avez perdu !');
+</script>";*/
+
+             $score = new Score();
+             $form = $this->createForm(ScoreType::class, $score);
+             $form->handleRequest($request);
+             if($form->isSubmitted() && $form->isValid()) {
+                 $score = $form->getData();
+                 $em->persist($score);
+                 $em->flush();
+                 $this->addFlash('success', 'Score enregistré');
+             }
+
+            $args = array (
+                "Form" => $form->createView(),
+                "loose" => 1,
+                "gagnant" => $tmp,
+            );
+
+            return $this->render('JeuLocal/fin.html.twig', $args);
+        }
+
         $session->set('resultat'.$idJoueur, $resultat);
         $args = array(
             'resultat' => $resultat,
+            'loose' => 0
         );
         return $this->render('JeuLocal/tour.html.twig', $args);
     }
@@ -64,11 +103,20 @@ class JeuLocalController extends AbstractController
         //le joueur a choisi de rejouer
         if($choix == 1) {
             $session->set('choix' . $idJoueur, 1);
-            if($idJoueur == 2 && $session->get('choix1') == 2){
 
+            if($idJoueur == 1)
+                $tmp = 2;
+            else
+                $tmp = 1;
+
+            if($session->get('choix' . $tmp) == 2) { // cas ou un seul rejoue
+                $session->set('nbRound', $session->get('nbRound') + 1);
                 $session->set('show', 1);
                 return $this->render('JeuLocal/tour.html.twig');
             }
+
+            if($idJoueur == 2)
+                $session->set('nbRound', $session->get('nbRound') + 1);
 
             $session->set('show', 1);
             $this->inverseIdJoueur($session);
@@ -91,63 +139,6 @@ class JeuLocalController extends AbstractController
         }
 
 
-        /*$idJoueur = $session->get('idJoueur');
-        if($idJoueur == 1) {
-            $session->set('idJoueur', 2);
-        } else {
-            $session->set('idJoueur', 1);
-        }
-
-        //si le joueur souhaite rejouer
-        if($choix == 1) {
-            $session->set('joueur'.$idJoueur.'choix', 1);
-        } else if($choix == 0) {
-            $session->set('joueur' . $idJoueur . 'finish', 2);
-            if($this->checkFin($session)) { //check si la partie est fini -> affiche résultat
-                return $this->render('JeuLocal/fin.html.twig');
-            }
-        }
-
-
-        //continuer la partie pour le joueur restant qui souhaite lancer ces deux dés
-        $session->set('show', 1);
-        return $this->render('JeuLocal/tour.html.twig');*/
-
-        /*$idJoueur = $session->get('idJoueur');
-        $session->set('joueur'.$idJoueur.'choix', $choix);
-        if ($idJoueur == 1){
-            $session->set('idJoueur', 2);
-        }
-        else {
-            $session->set('idJoueur', 1);
-        }
-        echo "joueur1choix : " . $session->get('joueur1choix') . "<br>";
-        echo "joueur2choix : " . $session->get('joueur2choix') . "<br>";
-
-
-            //verification si la partie est terminé
-            //partie terminé si les deux joueurs ne souhaitent pas rejouer
-            if ($this->checkFin($session)) {
-                $idGagnant = $this->checkGagnant($session);
-                $args = array(
-                    'gagnant' => $idGagnant,
-                );
-                return $this->render('JeuLocal/fin.html.twig', $args);
-            } else { //Si on relance un round
-                $session->set('newRound', 1); //TODO qq second avant nouveau round
-                $session->set('nbRound', $session->get('nbRound') + 1);
-                $args = array(
-                    'idJoueur' => $idJoueur,
-                );
-                if ($this->veuxRejouer($idJoueur, $session)) {
-                    $session->set('show', 1);
-                    $session->set('replay', 1);
-                    return $this->render('JeuLocal/tourRejoue.html.twig', $args);
-                } else {
-                    $session->set('replay', 0);
-                    return $this->render('JeuLocal/tourRejoue.html.twig', $args);
-                }
-            }*/
     }
 
     //write a private function to pass idJoueur to 2 if 1 and vice versa
@@ -160,14 +151,6 @@ class JeuLocalController extends AbstractController
         }
     }
 
-
-    public function veuxRejouer($idJoueur, Session $session){
-        if($session->get('joueur'.$idJoueur.'choix') == 1)
-            return true;
-        else
-            return false;
-    }
-
     private function checkFin(Session $session)
     {
         //renvoie true si fin de partie
@@ -175,25 +158,20 @@ class JeuLocalController extends AbstractController
         $joueur2 = $session->get("choix2");
         if($joueur1 == $joueur2 && $joueur1 == 2)
             return true;
-        else if($joueur1 == $joueur2 && $joueur1 == 1){
-            $this->addFlash('info', 'Les deux joueurs souhaitent relancer leurs dés');
-        } else if($joueur1 == 1 && $joueur2 == 2){
-            $this->addFlash('info', 'Le joueur 1 souhaite relancer ses dés');
-        } else if($joueur1 == 2 && $joueur2 == 1){
-            $this->addFlash('info', 'Le joueur 2 souhaite relancer ses dés');
-        }
-        return false;
+        else
+            return false;
     }
 
     private function checkGagnant(Session $session)
     {
         $resJoueur1 = $session->get('resultat1');
         $resJoueur2 = $session->get('resultat2');
-        if($resJoueur1 > $resJoueur2)
+
+        //si un joueur a + de 9 il a automatiquement perdu
+        if ($resJoueur1 > $resJoueur2)
             return 1;
-        else return 2;
+        else
+            return 2;
     }
-
-
 }
 

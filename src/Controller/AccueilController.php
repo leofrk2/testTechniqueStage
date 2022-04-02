@@ -12,6 +12,12 @@ class AccueilController extends AbstractController
     #[Route('/', name: '_index')]
     public function indexAction(): Response
     {
-        return $this->render("Accueil/Accueil.html.twig");
+        return $this->render("Accueil/accueil.html.twig");
+    }
+
+    #[Route('/score', name: '_score')]
+    public function scoreAction(): Response
+    {
+        return $this->render("Accueil/score.html.twig");
     }
 }
