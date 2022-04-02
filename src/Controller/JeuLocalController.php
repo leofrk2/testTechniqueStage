@@ -48,11 +48,12 @@ class JeuLocalController extends AbstractController
      */
     public function lancerDeAction($idJoueur,  Session $session, Request $request, EntityManagerInterface $em): Response
     {
-        //echo "<script>alert('lancer de');</script>";
-
-        $resultat = rand(1, 6) + rand(1, 6);
+        sleep(1);
+        $res1 = rand(1, 6);
+        $res2 = rand(1, 6);
+        $resultat = $res1 + $res2;
         $session->set('resultat'.$idJoueur, $resultat);
-        if($resultat > 90){
+        if($resultat > 9){
             if($idJoueur == 1){
                 $tmp = 2;
             }else{
@@ -83,7 +84,9 @@ class JeuLocalController extends AbstractController
         $session->set('resultat'.$idJoueur, $resultat);
         $args = array(
             'resultat' => $resultat,
-            'loose' => 0
+            'loose' => 0,
+            'resultat1' => $res1,
+            'resultat2' => $res2,
         );
         return $this->render('JeuLocal/tour.html.twig', $args);
     }

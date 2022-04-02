@@ -10,6 +10,8 @@
     width: 40%;
     background-color: #a9c25d;
     padding-bottom:50px;
+    min-height: 800px;
+    border-radius: 20px;
 }
 
 .buttons{

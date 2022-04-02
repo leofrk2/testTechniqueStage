@@ -16,7 +16,7 @@ class ScoreType extends AbstractType
             ->add('pseudo', null, [
                 'label' => false,
             ])
-            ->add('Submit', SubmitType::class, ['attr' => ['class' => 'btn btn-primary']])
+            ->add('Envoyer', SubmitType::class, ['attr' => ['class' => 'btn btn-primary']])
         ;
     }
 

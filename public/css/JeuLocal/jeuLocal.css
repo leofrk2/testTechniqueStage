@@ -1,8 +1,6 @@
 body{
     background-color: #f5eec2;
-    transition: opacity 1000ms;
 }
-
 
 h3{
     color: #416a59;
@@ -21,8 +19,6 @@ h3{
     border-color: #73a24e;
     color: #f5eec2;
 }
-
-
 
 .buttons{
     width: 50%;

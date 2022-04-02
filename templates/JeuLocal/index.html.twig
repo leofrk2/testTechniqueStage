@@ -29,6 +29,10 @@
                     Vous pouvez relancer autant de fois que vous le voulez, mais une fois que vous ne souhaitez plus relancer<br>
                     vous ne pouvez plus jouer.<br>
                 </p>
+                <br><br>
+                {% set urlAccueil = path('accueil_index') %}
+                <a href="{{ urlAccueil }}">
+                    <button type="button" class="btn btn-primary">Retour à l'accueil</button></a>
             </div>
         </div>
 {% endblock %}

@@ -29,6 +29,10 @@
         {{ form_widget(Form) }}
         {{ form_end(Form) }}
 
+            {% set urlAccueil = path('accueil_index') %}
+            <a href="{{ urlAccueil }}">
+                <button type="button" class="btn btn-primary">Retour à l'accueil</button></a>
+
         {% elseif not gagnant is defined %}
 
         <p>
