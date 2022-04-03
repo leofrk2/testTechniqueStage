@@ -25,11 +25,13 @@ class JeuLocalController extends AbstractController
     #[Route('/nouvellePartie', name: '_nouvelle_partie')]
     public function nouvellePartieAction(Session $session): Response
     {
-        // on init avec 1 pour le moment TODO
         $session->set('joueur1choix', 1);
         $session->set('joueur1choix', 1);
         $session->set('choix1', 0);
         $session->set('choix2', 0);
+
+        $session->set('resultat1', 0);
+        $session->set('resultat2', 0);
 
         $session->set('idJoueur', 1);
         $session->set('new' , 1);
@@ -54,6 +56,7 @@ class JeuLocalController extends AbstractController
         $resultat = $res1 + $res2;
         $session->set('resultat'.$idJoueur, $resultat);
         if($resultat > 9){
+            $this->addFlash('info', 'Le joueur '.$idJoueur.' a perdu, il a fait '.$resultat);
             if($idJoueur == 1){
                 $tmp = 2;
             }else{
@@ -74,7 +77,7 @@ class JeuLocalController extends AbstractController
             //TODO si le joueur perd pck il a fais + de 9 a voir si on vire le form
             $args = array(
                 'gagnant' => $tmp,
-                'resultat' => $resultat,
+                'resultat' => $session->get('resultat'.$tmp),
                 'Form' => $form->createView(),
             );
 
@@ -101,7 +104,6 @@ class JeuLocalController extends AbstractController
      */
     public function choixejouer($choix, Session $session, Request $request, EntityManagerInterface $em) : Response
     {
-        //TODO round++ si rejoue
         $idJoueur = $session->get('idJoueur');
 
         //le joueur a choisi de rejouer

@@ -23,10 +23,7 @@ function drawRectangles() {
         randomFace(ctx2);
         }, 50)
 
-    /*    const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#d74242';
-        let tmp = true;
-        ctx.fillRect(0, 0, 100, 100);*/
+
 }
 
 function randomFace(ctx){

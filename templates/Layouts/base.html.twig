@@ -1,41 +1,53 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Accueil{% endblock %}</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name=”viewport” content=”width=device-width, initial-scale=1.0">
+    <title>{% block title %}Accueil{% endblock %}</title>
 
 
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-
-
-    {% block flash %}
-            {% for msg in app.session.flashBag.get('info') %}
-                <div class="text-center alert alert-success" role="alert">
-                {{ msg }}
-                </div>
-            {% endfor %}
+    {% block stylesheets %}
     {% endblock %}
+    <script src="https://kit.fontawesome.com/cba07a665a.js" crossorigin="anonymous"></script>
+    {% block javascript %}
+    {% endblock %}
+    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_script_tags('app') }}
+</head>
+<body>
 
-    {% block body %}
-        {% endblock %}
-        {% block imageDes %}
-        <div class="dice1 position-fixed" style="background-image: url('{{ asset('pictures/dice1.png') }}')"></div>
-        <div class="dice2 position-fixed" style="background-image: url('{{ asset('pictures/dice2.png') }}')"></div>
-        {% endblock %}
 
-
-        {% block info %}
-            <div class="info">
-            Site réalisé à l'aide du framework Symfony
-            <img src="{{ asset('pictures/symfonyLogo.png') }}" alt="logo symfony">
-            </div>
+{% block flash %}
+    {% for msg in app.session.flashBag.get('info') %}
+        <div class="text-center alert alert-success" role="alert">
+            {{ msg }}
         </div>
-        {% endblock %}
+    {% endfor %}
+{% endblock %}
+
+{% block body %}
 
 
-    </body>
+
+{% endblock %}
+{% block imageDes %}
+    <div class="dice1 position-fixed" style="background-image: url('{{ asset('pictures/dice1.png') }}')"></div>
+    <div class="dice2 position-fixed" style="background-image: url('{{ asset('pictures/dice2.png') }}')"></div>
+{% endblock %}
+
+
+
+
+{% block info %}
+    <div class="d-flex justify-content-center">
+        <a class="logoLien" href="https://www.google.com/">
+        <i class="fab fa-symfony fa-3x"></i></a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a class="logoLien" href="https://www.google.com/">
+        <i class="fa fa-github fa-3x"></i></a>
+    </div>
+{% endblock %}
+
+
+</body>
 </html>

@@ -1,4 +1,6 @@
-window.onload(afficheResultat());
+window.onload = function() {
+    afficheResultat();
+}
 
 function afficheResultat(){
     const canvas = document.querySelector('#canvas');
@@ -10,8 +12,6 @@ function afficheResultat(){
     if(!canvas2.getContext) {
         return;
     }
-
-
     const ctx = canvas.getContext('2d');
     const ctx2 = canvas2.getContext('2d');
     ctx.fillStyle = '#d74242';
@@ -51,51 +51,5 @@ function afficheResultat(){
         default:
             break;
     }
-
-}
-
-function face1(ctx) {
-    ctx.fillStyle = '#d7bebe';
-    drawCircle(ctx, canvas.width / 2, canvas.height / 2, 10, true);
-}
-
-function face2(ctx) {
-    ctx.fillStyle = '#d7bebe';
-    drawCircle(ctx, canvas.width / 4, canvas.height / 4, 10, true);
-    drawCircle(ctx, (canvas.width / 4) * 3, (canvas.height / 4) * 3, 10, true);
-}
-
-function face3(ctx) {
-    ctx.fillStyle = '#d7bebe';
-    drawCircle(ctx, canvas.width / 4, canvas.height / 4, 10, true);
-    drawCircle(ctx, (canvas.width / 4) * 3, (canvas.height / 4) * 3, 10, true);
-    drawCircle(ctx, canvas.width / 2, canvas.height / 2, 10, true);
-}
-
-function face4(ctx) {
-    ctx.fillStyle = '#d7bebe';
-    drawCircle(ctx, canvas.width / 4, canvas.height / 4, 10, true);
-    drawCircle(ctx, (canvas.width / 4) * 3, (canvas.height / 4) * 3, 10, true);
-    drawCircle(ctx, canvas.width / 4, (canvas.height / 4) * 3, 10, true);
-    drawCircle(ctx, (canvas.width / 4) * 3, (canvas.height / 4), 10, true);
-}
-
-function face5(ctx) {
-    ctx.fillStyle = '#d7bebe';
-    drawCircle(ctx, canvas.width / 4, canvas.height / 4, 10, true);
-    drawCircle(ctx, (canvas.width / 4) * 3, (canvas.height / 4) * 3, 10, true);
-    drawCircle(ctx, canvas.width / 4, (canvas.height / 4) * 3, 10, true);
-    drawCircle(ctx, (canvas.width / 4) * 3, (canvas.height / 4), 10, true);
-    drawCircle(ctx, canvas.width / 2, canvas.height / 2, 10, true);
-}
-
-function face6(ctx) {
-    ctx.fillStyle = '#d7bebe';
-    drawCircle(ctx, canvas.width / 4, canvas.height / 4, 10, true);
-    drawCircle(ctx, (canvas.width / 4) * 3, (canvas.height / 4) * 3, 10, true);
-    drawCircle(ctx, canvas.width / 4, (canvas.height / 4) * 3, 10, true);
-    drawCircle(ctx, (canvas.width / 4) * 3, (canvas.height / 4), 10, true);
-    drawCircle(ctx, canvas.width / 4, canvas.height / 2, 10, true);
-    drawCircle(ctx, (canvas.width / 4) * 3, canvas.height / 2, 10, true);
 
 }
