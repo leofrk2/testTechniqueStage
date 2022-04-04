@@ -6,8 +6,8 @@ use App\Entity\Score;
 use App\Form\ConnexionType;
 use App\Form\ScoreType;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,41 +27,7 @@ class ScoreController extends AbstractController
         return $this->getScores($doctrine, $session);
     }
 
-    #[Route('/add', name: '_add')]
-    // Ajoute un score
-    public function addAction(ManagerRegistry $doctrine, Session $session): Response
-    {
 
-        $score = new Score();
-            $score->setScore($session->get('resFinal'));
-            $score->setPseudo($session->get('vainqueur'));
-            $em = $doctrine->getManager();
-            $em->persist($score);
-            $em->flush();
-            $this->addFlash('success', 'Score ajouté');
-            return $this->redirectToRoute('score_list');
-    }
-
-    #[Route('/connexion', name: '_connexion')]
-    // Affiche le formulaire de connexion
-    public function connexionAction(Request $request, Session $session, ManagerRegistry $doctrine): Response
-    {
-        $password = $request->get('password');
-        if(sha1($password) == "d033e22ae348aeb5660fc2140aec35850c4da997"){ //mot de passe : "admin"
-            $session->set('isAuth', true);
-            $this->addFlash('info', 'Vous êtes connecté en tant qu\'admin');
-        }
-
-        $session->set('formConnexionVisible', true);
-        return $this->getScores($doctrine, $session);
-    }
-
-    /**
-     * @param ManagerRegistry $doctrine
-     * @param Session $session
-     * @return Response
-     */
-    // Récupère les scores trié
     public function getScores(ManagerRegistry $doctrine, Session $session): Response
     {
         $em = $doctrine->getManager();
@@ -79,6 +45,41 @@ class ScoreController extends AbstractController
             'scores' => $scores,
         ];
         return $this->render('Accueil/score.html.twig', $args);
+    }
+
+    #[Route('/add', name: '_add')]
+    // Ajoute un score
+    public function addAction(ManagerRegistry $doctrine, Session $session): Response
+    {
+
+        $score = new Score();
+        $score->setScore($session->get('resFinal'));
+        $score->setPseudo($session->get('vainqueur'));
+        $em = $doctrine->getManager();
+        $em->persist($score);
+        $em->flush();
+        $this->addFlash('success', 'Score ajouté');
+        return $this->redirectToRoute('score_list');
+    }
+
+    /**
+     * @param ManagerRegistry $doctrine
+     * @param Session $session
+     * @return Response
+     */
+    // Récupère les scores trié
+    #[Route('/connexion', name: '_connexion')]
+    // Affiche le formulaire de connexion
+    public function connexionAction(Request $request, Session $session, ManagerRegistry $doctrine): Response
+    {
+        $password = $request->get('password');
+        if (sha1($password) == "d033e22ae348aeb5660fc2140aec35850c4da997") { //mot de passe : "admin"
+            $session->set('isAuth', true);
+            $this->addFlash('info', 'Vous êtes connecté en tant qu\'admin');
+        }
+
+        $session->set('formConnexionVisible', true);
+        return $this->getScores($doctrine, $session);
     }
 
     #[Route('/vider', name: '_vider')]

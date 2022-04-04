@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block javascript %}
-    <script src="https://unpkg.com/vue@2"></script>
-    <script src="{{ asset('js/JeuLocal/jeuLocal.js') }}"></script>
+<script src="https://unpkg.com/vue@2"></script>
+<script src="{{ asset('js/JeuLocal/jeuLocal.js') }}"></script>
     <script src="{{ asset('js/JeuLocal/resultat.js') }}"></script>
 {% endblock %}
 
@@ -19,75 +19,78 @@
         {% endif %}
         <h3>Round n° {{ app.session.get('nbRound') }}</h3><br><br>
 
-    {# Dans le cas ou on lance une nouvelle partie, on affiche quel joueur commence #}
-    {% if app.session.get('new') == 1 %}
-        <p>
-        Nouvelle partie ! Bon courage<br><br>
-            Joueur :
-            {% if app.session.get('idJoueur') == 1 %}
-                   {{ app.session.get('joueur1')}}
-            {% elseif app.session.get('idJoueur') == 2 %}
-                {{ app.session.get('joueur2') }}
-            {% endif %}
-        </p>
-        {{ app.session.set('new', 0) }}
-        {% set tmp = app.session.get('idJoueur') %}
-    {% endif %}
-
-    {# Dans le cas ou la partie est déjà lancée, on affiche le joueur a qui c'est le tour #}
-    {% if not tmp is defined %}
-    <p>
-        Au tour de :
-        {% if app.session.get('idJoueur') == 1 %}
-            {{ app.session.get('joueur1')}}
-        {% elseif app.session.get('idJoueur') == 2 %}
-            {{ app.session.get('joueur2') }}
-        {% endif %}
-    </p>
-    {% endif %}
-
-
-
-    {% if resultat is defined %}
-        <div class="rejouer">
+        {# Dans le cas ou on lance une nouvelle partie, on affiche quel joueur commence #}
+        {% if app.session.get('new') == 1 %}
             <p>
-            Résultat du lancer : {{ resultat }}
-        <br>
-        Voulez-vous rejouer lorsque ce tour sera terminé ?<br><br><br>
+                Nouvelle partie ! Bon courage<br><br>
+                Joueur :
+                {% if app.session.get('idJoueur') == 1 %}
+                    {{ app.session.get('joueur1') }}
+                {% elseif app.session.get('idJoueur') == 2 %}
+                    {{ app.session.get('joueur2') }}
+                {% endif %}
             </p>
-            <canvas id="canvas" width="100" height="100"></canvas>
-            <canvas id="canvas2" width="100" height="100"></canvas>
-            <script type="text/javascript">
-                var resultat1 = {{ resultat1 }};
-                var resultat2 = {{ resultat2 }};
-            </script>
-            <script src="{{ asset('js/JeuLocal/resultat.js') }}">
-            </script>
-            <br>
+            {{ app.session.set('new', 0) }}
+            {% set tmp = app.session.get('idJoueur') %}
+        {% endif %}
 
-        {% set urlNon = path('jeu_local_choix', {'choix' : 0}) %}
-        {% set urlOui = path('jeu_local_choix', {'choix' : 1}) %}
+        {# Dans le cas ou la partie est déjà lancée, on affiche le joueur a qui c'est le tour #}
+        {% if not tmp is defined %}
+            <p>
+                Au tour de :
+                {% if app.session.get('idJoueur') == 1 %}
+                    {{ app.session.get('joueur1') }}
+                {% elseif app.session.get('idJoueur') == 2 %}
+                    {{ app.session.get('joueur2') }}
+                {% endif %}
+            </p>
+        {% endif %}
 
-        <a href={{ urlOui }}>
-        <button type="button" class="btn btn-primary">Oui</button></a>
-        <a href={{ urlNon }}>
-        <button type="button" class="btn btn-primary">Non</button></a>
-        </div>
-    {% endif %}
-    <br>
-    <br>
-    <canvas id="canvas" width="100" height="100"></canvas>
+
+
+        {% if resultat is defined %}
+            <div class="rejouer">
+                <p>
+                    Résultat du lancer : {{ resultat }}
+                    <br>
+                    Voulez-vous rejouer lorsque ce tour sera terminé ?<br><br><br>
+                </p>
+                <canvas id="canvas" width="100" height="100"></canvas>
+                <canvas id="canvas2" width="100" height="100"></canvas>
+                <script type="text/javascript">
+                    var resultat1 = {{ resultat1 }};
+                    var resultat2 = {{ resultat2 }};
+                </script>
+                <script src="{{ asset('js/JeuLocal/resultat.js') }}">
+                </script>
+                <br>
+
+                {% set urlNon = path('jeu_local_choix', {'choix' : 0}) %}
+                {% set urlOui = path('jeu_local_choix', {'choix' : 1}) %}
+
+                <a href={{ urlOui }}>
+                    <button type="button" class="btn btn-primary">Oui</button>
+                </a>
+                <a href={{ urlNon }}>
+                    <button type="button" class="btn btn-primary">Non</button>
+                </a>
+            </div>
+        {% endif %}
+        <br>
+        <br>
+        <canvas id="canvas" width="100" height="100"></canvas>
         <canvas id="canvas2" width="100" height="100"></canvas>
 
 
-    {% if app.session.get('show') == 1 %}
-       {{ app.session.set('show', 0) }}
+        {% if app.session.get('show') == 1 %}
+            {{ app.session.set('show', 0) }}
             {% set urlLancerDes = path('jeu_local_lancer', {'idJoueur' : app.session.get('idJoueur')}) %}
-        <div class="buttons">
-            <a href = {{ urlLancerDes }}>
-                <button type="button" class="btn btn-primary" onclick="drawRectangles()">Lancer les dés</button></a>
-        </div>
-    {% endif %}
+            <div class="buttons">
+                <a href= {{ urlLancerDes }}>
+                    <button type="button" class="btn btn-primary" onclick="drawRectangles()">Lancer les dés</button>
+                </a>
+            </div>
+        {% endif %}
     </div>
 
 

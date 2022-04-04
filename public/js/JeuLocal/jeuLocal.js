@@ -5,7 +5,7 @@ function drawRectangles() {
     if (!canvas.getContext) {
         return;
     }
-    if(!canvas2.getContext) {
+    if (!canvas2.getContext) {
         return;
     }
 
@@ -21,12 +21,12 @@ function drawRectangles() {
         ctx2.fillRect(0, 0, 100, 100);
         randomFace(ctx);
         randomFace(ctx2);
-        }, 50)
+    }, 50)
 
 
 }
 
-function randomFace(ctx){
+function randomFace(ctx) {
     let a = randomInt(1, 6);
     if (a === 1)
         face1(ctx);

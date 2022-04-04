@@ -8,24 +8,27 @@
 {% block body %}
     <div class="container">
         <h1>Jeu en local</h1>
-            <h2>
-                Lancer une nouvelle partie : <br><br>
-                {% set urlNouvellePartie = path("jeu_local_nouvelle_partie") %}
-                <a href = {{ urlNouvellePartie }}>
-                    <button class="btn btn-primary">Nouvelle partie</button></a>
-            </h2>
-            <br>
-            <h3>Règles :</h3> <br>
-            <p>
-                Ce jeu se joue à deux joueurs, chaque joueur doit lancer ses deux dés, et le score le plus haut l'emporte<br>
-                Attention ! Si vous faites un score supérieur à 9, c'est terminé !<br>
-                Vous pouvez rejouer autant de fois que vous le voulez, mais une fois que vous ne souhaitez plus relancer<br>
-                vous ne pouvez plus jouer.<br>
-            </p>
-            <br><br>
-            {% set urlAccueil = path('accueil_index') %}
-            <a href="{{ urlAccueil }}">
-                <button type="button" class="btn btn-primary">Retour à l'accueil</button></a>
+        <h2>
+            Lancer une nouvelle partie : <br><br>
+            {% set urlNouvellePartie = path("jeu_local_nouvelle_partie") %}
+            <a href= {{ urlNouvellePartie }}>
+                <button class="btn btn-primary">Nouvelle partie</button>
+            </a>
+        </h2>
+        <br>
+        <h3>Règles :</h3> <br>
+        <p>
+            Ce jeu se joue à deux joueurs, chaque joueur doit lancer ses deux dés, et le score le plus haut
+            l'emporte<br>
+            Attention ! Si vous faites un score supérieur à 9, c'est terminé !<br>
+            Vous pouvez rejouer autant de fois que vous le voulez, mais une fois que vous ne souhaitez plus relancer<br>
+            vous ne pouvez plus jouer.<br>
+        </p>
+        <br><br>
+        {% set urlAccueil = path('accueil_index') %}
+        <a href="{{ urlAccueil }}">
+            <button type="button" class="btn btn-primary">Retour à l'accueil</button>
+        </a>
     </div>
 
     <script src="{{ asset('js/Accueil/app.js') }}"></script>

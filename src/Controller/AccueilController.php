@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Form\PseudoType;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,8 +34,7 @@ class AccueilController extends AbstractController
     {
         $form = $this->createForm(PseudoType::class);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $session->set('joueur1', $form->getData()['pseudo1']);
             $session->set('joueur2', $form->getData()['pseudo2']);
             return $this->redirectToRoute('jeu_local_index');

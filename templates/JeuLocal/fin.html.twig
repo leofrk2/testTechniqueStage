@@ -10,39 +10,42 @@
         <h1>Fin !</h1>
 
         {% if gagnant is defined %}
-        <p>
-            Gagnant :
-            {% if app.session.get('idJoueur') == 1 %}
-                {{ app.session.get('joueur1')}}
-            {% elseif app.session.get('idJoueur') == 2 %}
-                {{ app.session.get('joueur2') }}
-            {% endif %}
-            <br>
-            Score : {{ resultat }}<br>
+            <p>
+                Gagnant :
+                {% if app.session.get('idJoueur') == 1 %}
+                    {{ app.session.get('joueur1') }}
+                {% elseif app.session.get('idJoueur') == 2 %}
+                    {{ app.session.get('joueur2') }}
+                {% endif %}
+                <br>
+                Score : {{ resultat }}<br>
 
-            <br>
-            Voulez vous enregistrer votre score ?
+                <br>
+                Voulez vous enregistrer votre score ?
 
-        </p>
+            </p>
 
             {% set urlAccueil = path('accueil_index') %}
             {% set urlValid = path('score_add') %}
 
             <a href="{{ urlAccueil }}">
-                <button type="button" class="btn btn-primary">Retour à l'accueil</button></a>
+                <button type="button" class="btn btn-primary">Retour à l'accueil</button>
+            </a>
 
             <a href="{{ urlValid }}">
-                <button type="button" class="btn btn-primary">Enregistrer</button></a>
+                <button type="button" class="btn btn-primary">Enregistrer</button>
+            </a>
 
         {% elseif not gagnant is defined %}
 
-        <p>
-            Egalité ! <br>
-        </p>
+            <p>
+                Egalité ! <br>
+            </p>
 
             {% set urlAccueil = path('accueil_index') %}
             <a href="{{ urlAccueil }}">
-                <button type="button" class="btn btn-primary">Retour à l'accueil</button></a>
+                <button type="button" class="btn btn-primary">Retour à l'accueil</button>
+            </a>
 
         {% endif %}
 

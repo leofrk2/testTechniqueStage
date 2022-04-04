@@ -6,10 +6,10 @@ use App\Form\ScoreType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 
 /*
  * Controller qui gère le jeu en lui même
@@ -37,7 +37,7 @@ class JeuLocalController extends AbstractController
         $session->set('resultat2', 0);
 
         $session->set('idJoueur', 1);
-        $session->set('new' , 1);
+        $session->set('new', 1);
         $session->set('nbRound', 1);
         $session->set('show', 1);
         return $this->render('JeuLocal/tour.html.twig');
@@ -51,30 +51,30 @@ class JeuLocalController extends AbstractController
      * @param EntityManagerInterface $em
      * @return RedirectResponse
      */
-    public function lancerDeAction($idJoueur,  Session $session, Request $request, EntityManagerInterface $em): Response
+    public function lancerDeAction($idJoueur, Session $session, Request $request, EntityManagerInterface $em): Response
     {
         //fonction qui gère le lancer de dé
         sleep(1); //temps de l'animation
         $res1 = rand(1, 6);
         $res2 = rand(1, 6);
         $resultat = $res1 + $res2;
-        $session->set('resultat'.$idJoueur, $resultat);
-        if($resultat > 9){ //cas ou le joueur obtient un résultat supérieur a 9, et perd
-            if($idJoueur == 1){
-                $this->addFlash('info', $session->get('joueur1').' a perdu, il a fait '.$resultat);
-            }else{
-                $this->addFlash('info', $session->get('joueur2').' a perdu, il a fait '.$resultat);
+        $session->set('resultat' . $idJoueur, $resultat);
+        if ($resultat > 9) { //cas ou le joueur obtient un résultat supérieur a 9, et perd
+            if ($idJoueur == 1) {
+                $this->addFlash('info', $session->get('joueur1') . ' a perdu, il a fait ' . $resultat);
+            } else {
+                $this->addFlash('info', $session->get('joueur2') . ' a perdu, il a fait ' . $resultat);
             }
-            if($idJoueur == 1){
+            if ($idJoueur == 1) {
                 $tmp = 2;
-            }else{
+            } else {
                 $tmp = 1;
             }
 
 
             $resultat = $session->get('resultat' . $tmp);
             $session->set('resFinal', $resultat);
-            if($tmp == 1)
+            if ($tmp == 1)
                 $session->set('vainqueur', $session->get('joueur1'));
             else
                 $session->set('vainqueur', $session->get('joueur2'));
@@ -87,7 +87,7 @@ class JeuLocalController extends AbstractController
 
         }
 
-        $session->set('resultat'.$idJoueur, $resultat);
+        $session->set('resultat' . $idJoueur, $resultat);
         $args = array(
             'resultat' => $resultat,
             'loose' => 0,
@@ -105,27 +105,27 @@ class JeuLocalController extends AbstractController
      * @param EntityManagerInterface $em
      * @return RedirectResponse
      */
-    public function choixerjouer($choix, Session $session, Request $request, EntityManagerInterface $em) : Response
+    public function choixerjouer($choix, Session $session, Request $request, EntityManagerInterface $em): Response
     {
         //cette fonction gère le cas ou un des joueurs rejoue, ou les deux joueurs
         $idJoueur = $session->get('idJoueur');
 
         //le joueur a choisi de rejouer
-        if($choix == 1) {
+        if ($choix == 1) {
             $session->set('choix' . $idJoueur, 1);
 
-            if($idJoueur == 1)
+            if ($idJoueur == 1)
                 $tmp = 2;
             else
                 $tmp = 1;
 
-            if($session->get('choix' . $tmp) == 2) { // cas ou un seul rejoue
+            if ($session->get('choix' . $tmp) == 2) { // cas ou un seul rejoue
                 $session->set('nbRound', $session->get('nbRound') + 1);
                 $session->set('show', 1);
                 return $this->render('JeuLocal/tour.html.twig');
             }
 
-            if($idJoueur == 2)
+            if ($idJoueur == 2)
                 $session->set('nbRound', $session->get('nbRound') + 1);
 
             $session->set('show', 1);
@@ -135,15 +135,15 @@ class JeuLocalController extends AbstractController
 
         } else { //Le joueur ne rejoue pas
             $session->set('choix' . $idJoueur, 2);
-            if($this->checkFin($session)) {
+            if ($this->checkFin($session)) {
                 $idGagnant = $this->checkGagnant($session);
-                if($idGagnant != 0) {
+                if ($idGagnant != 0) {
                     $resultat = $session->get('resultat' . $idGagnant);
                     $session->set('resFinal', $resultat);
-                    if($idGagnant == 1)
-                            $session->set('vainqueur', $session->get('joueur1'));
-                        else
-                            $session->set('vainqueur', $session->get('joueur2'));
+                    if ($idGagnant == 1)
+                        $session->set('vainqueur', $session->get('joueur1'));
+                    else
+                        $session->set('vainqueur', $session->get('joueur2'));
                     $args = array(
                         'score' => $resultat,
                         'gagnant' => $idGagnant,
@@ -163,9 +163,10 @@ class JeuLocalController extends AbstractController
     }
 
     //inversion de l'id du joueur a chaque tour
-    private function inverseIdJoueur(Session $session){
+    private function inverseIdJoueur(Session $session)
+    {
         $idJoueur = $session->get('idJoueur');
-        if($idJoueur == 1) {
+        if ($idJoueur == 1) {
             $session->set('idJoueur', 2);
         } else {
             $session->set('idJoueur', 1);
@@ -178,7 +179,7 @@ class JeuLocalController extends AbstractController
         //renvoie true si fin de partie
         $joueur1 = $session->get("choix1");
         $joueur2 = $session->get("choix2");
-        if($joueur1 == $joueur2 && $joueur1 == 2)
+        if ($joueur1 == $joueur2 && $joueur1 == 2)
             return true;
         else
             return false;

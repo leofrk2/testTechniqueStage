@@ -25,8 +25,7 @@ class PseudoType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
-            ->add('Continuer', SubmitType::class, ['attr' => ['class' => 'btn btn-primary']])
-        ;
+            ->add('Continuer', SubmitType::class, ['attr' => ['class' => 'btn btn-primary']]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

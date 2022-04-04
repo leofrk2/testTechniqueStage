@@ -6,7 +6,7 @@ new Vue({
     delimiters: ['${', '}'],
     el: '#app',
     data: {
-        theme : false,
+        theme: false,
         showModal: false,
     },
     watch: {
@@ -20,8 +20,7 @@ new Vue({
             document.querySelector('.btn4').style.backgroundColor = this.theme ? '#060930' : null;
         }
     },
-    methods: {
-    }
+    methods: {}
 })
 
 

@@ -41,7 +41,8 @@
         <div class="buttons">
             {% set urlAccueil = path('accueil_index') %}
             <a href="{{ urlAccueil }}">
-                <button type="button" class="btn btnScoreAccueil">Retour à l'accueil</button></a>
+                <button type="button" class="btn btnScoreAccueil">Retour à l'accueil</button>
+            </a>
 
             {% set urlConnexion = path('score_connexion') %}
             {% if app.session.get('formConnexionVisible') == true %}
@@ -55,16 +56,19 @@
             {% else %}
                 {% if app.session.get('isAuth') == false %}
                     <a href="{{ urlConnexion }}">
-                        <button type="button" class="btn btnScoreConnexion">Connexion</button></a>
+                        <button type="button" class="btn btnScoreConnexion">Connexion</button>
+                    </a>
                 {% endif %}
             {% endif %}
             {% if app.session.get('isAuth') == true %}
                 {% set urlDeconexion = path('score_deconnexion') %}
                 <a href="{{ urlDeconexion }}">
-                    <button type="button" class="btn btnScoreDeconnexion">Déconnexion</button></a>
+                    <button type="button" class="btn btnScoreDeconnexion">Déconnexion</button>
+                </a>
                 {% set urlVider = path('score_vider') %}
                 <a href="{{ urlVider }}">
-                    <button type="button" class="btn btnScoreVider">Vider les scores</button></a>
+                    <button type="button" class="btn btnScoreVider">Vider les scores</button>
+                </a>
 
             {% endif %}
         </div>
