@@ -15,11 +15,11 @@
         {% elseif scores is defined %}
         <table class="score-table header">
             <thead>
-                <tr>
-                    <th>Rang</th>
-                    <th>Pseudo</th>
-                    <th>Score</th>
-                </tr>
+            <tr>
+                <th>Rang</th>
+                <th>Pseudo</th>
+                <th>Score</th>
+            </tr>
             </thead>
         </table>
         <div class="mid">
@@ -37,12 +37,36 @@
                 </tbody>
             </table>
             {% endif %}
-
         </div>
         <div class="buttons">
             {% set urlAccueil = path('accueil_index') %}
-        <a href="{{ urlAccueil }}">
-            <button type="button" class="btn btnScore">Retour à l'accueil</button></a>
+            <a href="{{ urlAccueil }}">
+                <button type="button" class="btn btnScoreAccueil">Retour à l'accueil</button></a>
+
+            {% set urlConnexion = path('score_connexion') %}
+            {% if app.session.get('formConnexionVisible') == true %}
+
+                {% if app.session.get('isAuth') == false %}
+                    <form action="{{ urlConnexion }}" method="post" class="connexion">
+                        <input type="password" name="password" placeholder="Entrer le mot de passe admin..." required>
+                        <button type="submit" name="submit" class="btn btnScoreValider">Valider</button>
+                    </form>
+                {% endif %}
+            {% else %}
+                {% if app.session.get('isAuth') == false %}
+                    <a href="{{ urlConnexion }}">
+                        <button type="button" class="btn btnScoreConnexion">Connexion</button></a>
+                {% endif %}
+            {% endif %}
+            {% if app.session.get('isAuth') == true %}
+                {% set urlDeconexion = path('score_deconnexion') %}
+                <a href="{{ urlDeconexion }}">
+                    <button type="button" class="btn btnScoreDeconnexion">Déconnexion</button></a>
+                {% set urlVider = path('score_vider') %}
+                <a href="{{ urlVider }}">
+                    <button type="button" class="btn btnScoreVider">Vider les scores</button></a>
+
+            {% endif %}
         </div>
     </div>
     </div>

@@ -23,7 +23,9 @@
     width: 30vmin;
     margin-left: auto;
     margin-right: auto;
+
 }
+
 
 .btn{
     border-color: #f5eec2;
@@ -163,9 +165,37 @@ p{
     vertical-align: middle;
 }
 
-.btnScore{
+.connexion{
     position: absolute;
-    bottom: 30vmin;
+    bottom: 40vmin;
+    margin-left: 6vmin;
+}
+
+.btnScoreAccueil{
+    position: absolute;
+    bottom: 32vmin;
+    margin-left: -10vmin;
+}
+.btnScoreConnexion{
+    position: absolute;
+    bottom: 40vmin;
+    margin-left: -10vmin;
+}
+.btnScoreValider{
+    position: absolute;
+    bottom: -20vmin;
+    margin-left: -23.5vmin;
+}
+
+.btnScoreDeconnexion{
+    position: absolute;
+    bottom: 40vmin;
+    margin-left: -10vmin;
+}
+.btnScoreVider{
+    position: absolute;
+    bottom: 23vmin;
+    margin-left: -10vmin;
 }
 
 .btnModal{
@@ -180,7 +210,6 @@ p{
     width: 300px;
     margin: 5px auto;
     background-color: #fff;
-    border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
     transition: all 0.3s ease;
     border-radius: 20px;
