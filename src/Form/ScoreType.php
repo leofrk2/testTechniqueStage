@@ -10,12 +10,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ScoreType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+/*    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('Envoyer', SubmitType::class, ['attr' => ['class' => 'btn btn-primary']])
         ;
-    }
+    }*/
 
     public function configureOptions(OptionsResolver $resolver): void
     {
@@ -24,3 +24,4 @@ class ScoreType extends AbstractType
         ]);
     }
 }
+

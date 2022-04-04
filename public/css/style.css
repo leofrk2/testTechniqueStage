@@ -8,7 +8,7 @@
     text-align: center;
     background-color: #a9c25d;
     border-radius: 20px;
-    height: 80vmin;
+    height: 80vh;
     width: 60vw;
 }
 
@@ -188,6 +188,11 @@ p{
 
 .form-control{
     margin-bottom: 20vmin;
+}
+
+.form{
+    color: #39395f;
+    font-size: 2.5vmin;
 }
 
 .modal-header h3 {
