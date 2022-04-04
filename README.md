@@ -14,4 +14,4 @@ Quelques pistes d'améliorations :
     -> Rajouter un espace de connexion pour chaque utilisateur
 
 
-Le mot de passe du compte admin pour pouvoir supprimer les entrée de la base de donnée est : "admin".
+Le mot de passe du compte admin pour pouvoir supprimer les entrées de la base de donnée est : "admin".
