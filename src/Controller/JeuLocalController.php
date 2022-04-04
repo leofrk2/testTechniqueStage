@@ -6,7 +6,6 @@ use App\Entity\Score;
 use App\Form\ScoreType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -56,7 +55,11 @@ class JeuLocalController extends AbstractController
         $resultat = $res1 + $res2;
         $session->set('resultat'.$idJoueur, $resultat);
         if($resultat > 9){
-            $this->addFlash('info', 'Le joueur '.$idJoueur.' a perdu, il a fait '.$resultat);
+            if($idJoueur == 1){
+                $this->addFlash('info', $session->get('joueur1').' a perdu, il a fait '.$resultat);
+            }else{
+                $this->addFlash('info', $session->get('joueur2').' a perdu, il a fait '.$resultat);
+            }
             if($idJoueur == 1){
                 $tmp = 2;
             }else{
@@ -64,24 +67,19 @@ class JeuLocalController extends AbstractController
             }
 
 
-            $score = new Score();
-            $form = $this->createForm(ScoreType::class, $score);
-            $score->setScore($resultat);
-            $form->handleRequest($request);
-            if($form->isSubmitted() && $form->isValid()) {
-                $em->persist($score);
-                $em->flush();
-                $this->addFlash('info', 'Score ajouté avec succès');
-                return $this->redirectToRoute('score_list');
-            }
-            //TODO si le joueur perd pck il a fais + de 9 a voir si on vire le form
+            $resultat = $session->get('resultat' . $tmp);
+            $session->set('resFinal', $resultat);
+            if($tmp == 1)
+                $session->set('vainqueur', $session->get('joueur1'));
+            else
+                $session->set('vainqueur', $session->get('joueur2'));
             $args = array(
+                'score' => $resultat,
                 'gagnant' => $tmp,
-                'resultat' => $session->get('resultat'.$tmp),
-                'Form' => $form->createView(),
+                'resultat' => $resultat,
             );
-
             return $this->render('JeuLocal/fin.html.twig', $args);
+
         }
 
         $session->set('resultat'.$idJoueur, $resultat);
@@ -135,24 +133,15 @@ class JeuLocalController extends AbstractController
                 $idGagnant = $this->checkGagnant($session);
                 if($idGagnant != 0) {
                     $resultat = $session->get('resultat' . $idGagnant);
-
-                    $score = new Score();
-                    $form = $this->createForm(ScoreType::class, $score);
-                    $score->setScore($resultat);
-                    $form->handleRequest($request);
-                    if ($form->isSubmitted() && $form->isValid()) {
-                        $em->persist($score);
-                        $em->flush();
-                        $this->addFlash('info', 'Score ajouté avec succès');
-                        return $this->redirectToRoute('score_list');
-                    }
-
-
+                    $session->set('resFinal', $resultat);
+                    if($idGagnant == 1)
+                            $session->set('vainqueur', $session->get('joueur1'));
+                        else
+                            $session->set('vainqueur', $session->get('joueur2'));
                     $args = array(
                         'score' => $resultat,
                         'gagnant' => $idGagnant,
                         'resultat' => $resultat,
-                        'Form' => $form->createView()
                     );
                     return $this->render('JeuLocal/fin.html.twig', $args);
                 } else

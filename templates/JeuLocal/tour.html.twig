@@ -4,13 +4,10 @@
     Partie en cours
 {% endblock %}
 
-{% block stylesheets %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ asset('css/accueil.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/JeuLocal/jeuLocal.css') }}">
+{% block javascript %}
     <script src="https://unpkg.com/vue@2"></script>
-    <script type="text/javascript" src="{{ asset('js/JeuLocal/jeuLocal.js') }}"></script>
-
+    <script src="{{ asset('js/JeuLocal/jeuLocal.js') }}"></script>
+    <script src="{{ asset('js/JeuLocal/resultat.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -26,7 +23,12 @@
     {% if app.session.get('new') == 1 %}
         <p>
         Nouvelle partie ! Bon courage<br><br>
-        Joueur {{ app.session.get('idJoueur')}} commence !
+            Joueur :
+            {% if app.session.get('idJoueur') == 1 %}
+                   {{ app.session.get('joueur1')}}
+            {% elseif app.session.get('idJoueur') == 2 %}
+                {{ app.session.get('joueur2') }}
+            {% endif %}
         </p>
         {{ app.session.set('new', 0) }}
         {% set tmp = app.session.get('idJoueur') %}
@@ -35,7 +37,12 @@
     {# Dans le cas ou la partie est déjà lancée, on affiche le joueur a qui c'est le tour #}
     {% if not tmp is defined %}
     <p>
-        Au tour de : Joueur {{ app.session.get('idJoueur') }}
+        Au tour de :
+        {% if app.session.get('idJoueur') == 1 %}
+            {{ app.session.get('joueur1')}}
+        {% elseif app.session.get('idJoueur') == 2 %}
+            {{ app.session.get('joueur2') }}
+        {% endif %}
     </p>
     {% endif %}
 

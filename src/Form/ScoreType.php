@@ -13,9 +13,6 @@ class ScoreType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('pseudo', null, [
-                'label' => false,
-            ])
             ->add('Envoyer', SubmitType::class, ['attr' => ['class' => 'btn btn-primary']])
         ;
     }

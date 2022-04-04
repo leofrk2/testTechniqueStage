@@ -5,9 +5,7 @@
     <meta name=”viewport” content=”width=device-width, initial-scale=1.0">
     <title>{% block title %}Accueil{% endblock %}</title>
 
-
-    {% block stylesheets %}
-    {% endblock %}
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <script src="https://kit.fontawesome.com/cba07a665a.js" crossorigin="anonymous"></script>
     {% block javascript %}
     {% endblock %}
@@ -19,7 +17,7 @@
 
 {% block flash %}
     {% for msg in app.session.flashBag.get('info') %}
-        <div class="text-center alert alert-success" role="alert">
+        <div class="alert">
             {{ msg }}
         </div>
     {% endfor %}
@@ -31,18 +29,22 @@
 
 {% endblock %}
 {% block imageDes %}
-    <div class="dice1 position-fixed" style="background-image: url('{{ asset('pictures/dice1.png') }}')"></div>
-    <div class="dice2 position-fixed" style="background-image: url('{{ asset('pictures/dice2.png') }}')"></div>
+    <div class="wrapperDe1">
+    <img srcset="{{ asset('pictures/dice1.png') }} 1800w", sizes="(max-width: 400px) 200px" src = {{ asset('pictures/dice1.png') }}>
+    </div>
+    <div class="wrapperDe2">
+        <img srcset="{{ asset('pictures/dice2.png') }} 2500w", sizes="(max-width: 400px) 200px" src = {{ asset('pictures/dice2.png') }}>
+    </div>
 {% endblock %}
 
 
 
 
 {% block info %}
-    <div class="d-flex justify-content-center">
-        <a class="logoLien" href="https://www.google.com/">
+    <div class="info">
+
+        <a class="logoLien" href="https://symfony.com/releases/5.4">
         <i class="fab fa-symfony fa-3x"></i></a>
-        &nbsp;&nbsp;&nbsp;&nbsp;
         <a class="logoLien" href="https://www.google.com/">
         <i class="fa fa-github fa-3x"></i></a>
     </div>

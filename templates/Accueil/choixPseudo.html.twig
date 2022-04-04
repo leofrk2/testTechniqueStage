@@ -1,0 +1,18 @@
+{% extends "Layouts/base.html.twig" %}
+
+{% block title %}
+    Choix des pseudos
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>Choisissez vos pseudos</h1>
+
+        {{ form_start(Form) }}
+        {{ form_widget(Form) }}
+        {{ form_end(Form) }}
+
+    </div>
+
+{% endblock %}

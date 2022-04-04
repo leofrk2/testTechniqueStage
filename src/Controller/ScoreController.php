@@ -35,6 +35,21 @@ class ScoreController extends AbstractController
         return $this->render('Accueil/score.html.twig', $args);
     }
 
+    #[Route('/add', name: '_add')]
+    public function addAction(ManagerRegistry $doctrine, Session $session): Response
+    {
+
+        $score = new Score();
+            $score->setScore($session->get('resFinal'));
+            $score->setPseudo($session->get('vainqueur'));
+            $em = $doctrine->getManager();
+            $em->persist($score);
+            $em->flush();
+            $this->addFlash('success', 'Score ajouté');
+            return $this->redirectToRoute('score_list');
+
+    }
+
 
 
 }

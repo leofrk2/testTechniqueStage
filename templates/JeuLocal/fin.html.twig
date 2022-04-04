@@ -4,12 +4,6 @@
     Fin !
 {% endblock %}
 
-{% block stylesheets %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ asset('css/accueil.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/JeuLocal/fin.css') }}">
-{% endblock %}
-
 {% block body %}
 
     <div class="container">
@@ -17,21 +11,28 @@
 
         {% if gagnant is defined %}
         <p>
-            Gagnant : Joueur {{ gagnant }} <br>
+            Gagnant :
+            {% if app.session.get('idJoueur') == 1 %}
+                {{ app.session.get('joueur1')}}
+            {% elseif app.session.get('idJoueur') == 2 %}
+                {{ app.session.get('joueur2') }}
+            {% endif %}
+            <br>
             Score : {{ resultat }}<br>
 
             <br>
-            Entrez votre pseudo pour enregistrer votre score : <br>
-
+            Voulez vous enregistrer votre score ?
 
         </p>
-        {{ form_start(Form) }}
-        {{ form_widget(Form) }}
-        {{ form_end(Form) }}
 
             {% set urlAccueil = path('accueil_index') %}
+            {% set urlValid = path('score_add') %}
+
             <a href="{{ urlAccueil }}">
                 <button type="button" class="btn btn-primary">Retour à l'accueil</button></a>
+
+            <a href="{{ urlValid }}">
+                <button type="button" class="btn btn-primary">Enregistrer</button></a>
 
         {% elseif not gagnant is defined %}
 
