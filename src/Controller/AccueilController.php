@@ -9,6 +9,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
+/*
+ * Controller de la page d'accueil
+ */
+
 #[Route('/', name: 'accueil')]
 class AccueilController extends AbstractController
 {
@@ -25,6 +29,7 @@ class AccueilController extends AbstractController
     }
 
     #[Route('/choixPseudo', name: '_choixPseudo')]
+    //La fonction choixPseudo permet de choisir un pseudo pour les deux joueurs
     public function choixPseudoAction(Request $request, Session $session): Response
     {
         $form = $this->createForm(PseudoType::class);
@@ -33,7 +38,6 @@ class AccueilController extends AbstractController
         {
             $session->set('joueur1', $form->getData()['pseudo1']);
             $session->set('joueur2', $form->getData()['pseudo2']);
-
             return $this->redirectToRoute('jeu_local_index');
         }
 

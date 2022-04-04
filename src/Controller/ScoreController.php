@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Score;
 use App\Form\ConnexionType;
 use App\Form\ScoreType;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,10 +12,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
+/*
+ * Ce controller gère l'affichage des scores
+ */
+
 #[Route('/score', name: 'score')]
 class ScoreController extends AbstractController
 {
     #[Route('/list', name: '_list')]
+    // Affiche la liste des scores
     public function listAction(ManagerRegistry $doctrine, Session $session): Response
     {
         $session->set('formConnexionVisible', false);
@@ -24,6 +28,7 @@ class ScoreController extends AbstractController
     }
 
     #[Route('/add', name: '_add')]
+    // Ajoute un score
     public function addAction(ManagerRegistry $doctrine, Session $session): Response
     {
 
@@ -38,10 +43,11 @@ class ScoreController extends AbstractController
     }
 
     #[Route('/connexion', name: '_connexion')]
+    // Affiche le formulaire de connexion
     public function connexionAction(Request $request, Session $session, ManagerRegistry $doctrine): Response
     {
         $password = $request->get('password');
-        if(sha1($password) == "d033e22ae348aeb5660fc2140aec35850c4da997"){
+        if(sha1($password) == "d033e22ae348aeb5660fc2140aec35850c4da997"){ //mot de passe : "admin"
             $session->set('isAuth', true);
             $this->addFlash('info', 'Vous êtes connecté en tant qu\'admin');
         }
@@ -55,6 +61,7 @@ class ScoreController extends AbstractController
      * @param Session $session
      * @return Response
      */
+    // Récupère les scores trié
     public function getScores(ManagerRegistry $doctrine, Session $session): Response
     {
         $em = $doctrine->getManager();
@@ -75,6 +82,7 @@ class ScoreController extends AbstractController
     }
 
     #[Route('/vider', name: '_vider')]
+    // Vide la table score
     public function viderAction(ManagerRegistry $doctrine, Session $session): Response
     {
         $em = $doctrine->getManager();
@@ -89,6 +97,7 @@ class ScoreController extends AbstractController
     }
 
     #[Route('/deconnexion', name: '_deconnexion')]
+    // Déconnecte l'utilisateur
     public function deconnexionAction(Session $session): Response
     {
         $session->set('isAuth', false);

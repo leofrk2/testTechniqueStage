@@ -19,7 +19,7 @@ class PseudoType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])->add('pseudo2', null, [
-                'label' => 'Pseudo du joueur 1 : ',
+                'label' => 'Pseudo du joueur 2 : ',
                 'attr' => [
                     'placeholder' => 'Entrer votre pseudo...',
                     'class' => 'form-control',

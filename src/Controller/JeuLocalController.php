@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Score;
 use App\Form\ScoreType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,6 +10,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+
+/*
+ * Controller qui gère le jeu en lui même
+ */
 
 #[Route('/jeuLocal', name: 'jeu_local')]
 class JeuLocalController extends AbstractController
@@ -24,6 +27,7 @@ class JeuLocalController extends AbstractController
     #[Route('/nouvellePartie', name: '_nouvelle_partie')]
     public function nouvellePartieAction(Session $session): Response
     {
+        //initalisation des variables de session
         $session->set('joueur1choix', 1);
         $session->set('joueur1choix', 1);
         $session->set('choix1', 0);
@@ -49,12 +53,13 @@ class JeuLocalController extends AbstractController
      */
     public function lancerDeAction($idJoueur,  Session $session, Request $request, EntityManagerInterface $em): Response
     {
-        sleep(1);
+        //fonction qui gère le lancer de dé
+        sleep(1); //temps de l'animation
         $res1 = rand(1, 6);
         $res2 = rand(1, 6);
         $resultat = $res1 + $res2;
         $session->set('resultat'.$idJoueur, $resultat);
-        if($resultat > 9){
+        if($resultat > 9){ //cas ou le joueur obtient un résultat supérieur a 9, et perd
             if($idJoueur == 1){
                 $this->addFlash('info', $session->get('joueur1').' a perdu, il a fait '.$resultat);
             }else{
@@ -100,8 +105,9 @@ class JeuLocalController extends AbstractController
      * @param EntityManagerInterface $em
      * @return RedirectResponse
      */
-    public function choixejouer($choix, Session $session, Request $request, EntityManagerInterface $em) : Response
+    public function choixerjouer($choix, Session $session, Request $request, EntityManagerInterface $em) : Response
     {
+        //cette fonction gère le cas ou un des joueurs rejoue, ou les deux joueurs
         $idJoueur = $session->get('idJoueur');
 
         //le joueur a choisi de rejouer
@@ -156,7 +162,7 @@ class JeuLocalController extends AbstractController
 
     }
 
-    //write a private function to pass idJoueur to 2 if 1 and vice versa
+    //inversion de l'id du joueur a chaque tour
     private function inverseIdJoueur(Session $session){
         $idJoueur = $session->get('idJoueur');
         if($idJoueur == 1) {
@@ -166,6 +172,7 @@ class JeuLocalController extends AbstractController
         }
     }
 
+    //vérifie si le jeu est fini
     private function checkFin(Session $session)
     {
         //renvoie true si fin de partie
@@ -177,6 +184,7 @@ class JeuLocalController extends AbstractController
             return false;
     }
 
+    //renvoie l'id du gagnant
     private function checkGagnant(Session $session)
     {
         $resJoueur1 = $session->get('resultat1');
